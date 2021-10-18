@@ -1,10 +1,9 @@
 var stompClient = null
 
 function connect(){
-	let socket = new SockJS("/server1")
+	let socket = new SockJS("/chat")
 	stompClient=Stomp.over(socket);
 	stompClient.connect({}, function(frame){
-			
 		stompClient.subscribe("/topic/return-to", function(response){
 			showMessage(JSON.parse(response.body))
 		})
