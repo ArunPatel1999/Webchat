@@ -1,33 +1,35 @@
-<!DOCTYPE html> 
-<html>
+
+<!DOCTYPE html>
+<html lang="">
 <head>
+
     <meta charset="utf-8">
-    <title>Live Video</title>
-    <style type="text/css">
-        #container{
-            margin: 0px auto;
-            width: 500px;
-            height: 375px;
-            border: 10px #333 solid;
-        }
-        #videoElement{
-            width: 500px;
-            height: 375px;
-            background-color: #666;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Acess</title>
+    <link rel="stylesheet" href="video.css">
 
 </head>
-<body bgcolor="skyblue">
-    <div id="container">
-        <video autoplay="true", id="videoElement"></video>
-    </div>
 
-    <script type="text/javascript">
-        var video =  document.querySelector("#videoElement");
-        navigator.getUserMedia = navigator.getUserMedia||navigator.webkitGetUsermedia||navigator.mozGetUserMedia||navigator.getmsGetUserMedia||navigator.oGetUserMedia;
-        
-    </script>
+<body>
     
+    <!--making video object to display video-->
+    
+    <div class="videoObject">
+        <video id="videoElement" autoplay="true" width="700" height="500"></video>
+    </div>
+    
+    <!--Now capture the Image-->
+    
+    <!--creating a button to capture the Image-->
+         
+    <button id="capture" class="btn">Capture Image</button>
+                                  
+    <!--canvas to display the captured picture-->
+    
+    <canvas id="image" class="canvas"></canvas>
+
+
+    <script src="video.js"></script>
+
 </body>
 </html>

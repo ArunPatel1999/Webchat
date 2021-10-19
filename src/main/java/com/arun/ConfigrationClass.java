@@ -24,7 +24,7 @@ public class ConfigrationClass extends AbstractWebSocketMessageBrokerConfigurer
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/server1").withSockJS();
+		registry.addEndpoint("/chat").withSockJS();
 	}
 
 	@Override

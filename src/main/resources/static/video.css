@@ -1,0 +1,21 @@
+.videoObject {
+    border: 12px solid #222;
+    background: grey;
+    height: 500px;
+    width: 700px;        
+}
+
+.btn {
+    height: 100px;
+    width: 725px;
+    background: cornflowerblue;
+    font-weight: bold;
+    font-size: 56px;
+}
+
+.canvas {
+    border: 12px solid #222;
+    background: grey;
+    height: 500px;
+    width: 700px; 
+}
