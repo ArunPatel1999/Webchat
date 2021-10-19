@@ -26,13 +26,12 @@ public class Controllers {
 		return message;
 	}
 
-//	@MessageMapping("/setlive")
-//	@SendTo("/topic/getAllLive")
-//	public List<Live> getLive(@RequestBody Live live) {
-//		live.setId(liveId++);
-//		liveList.add(live);
-//		System.out.println("live => " + live);
-//		return liveList;
-//	}
+	@MessageMapping("/setlive")
+	@SendTo("/topic/getAllLive")
+	public List<Live> getLive(@RequestBody Live live) {
+		live.setId(liveId++);
+		liveList.add(live);
+		return liveList;
+	}
 
 }

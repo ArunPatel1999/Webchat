@@ -1,3 +1,4 @@
+
 // Allow accessing the camera
 
 var video = document.querySelector("#videoElement");
@@ -10,6 +11,8 @@ if (navigator.mediaDevices.getUserMedia) {
         // after allowing the camera start the video stream
     }).then(function (stream) {
         video.srcObject = stream
+        
+        console.log(video);
         //play the video
         video.play();
     }).catch(function (error) {

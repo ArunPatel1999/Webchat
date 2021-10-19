@@ -10,11 +10,11 @@ function connect(){
 		})
 	})
 
-	// stompClient.connect({}, function(frame){
-	// 	stompClient.subscribe("/topic/getAllLive", function(response){
-	// 		showLive(JSON.parse(response.body))
-	// 	})
-	// })
+	stompClient.connect({}, function(frame){
+		stompClient.subscribe("/topic/getAllLive", function(response){
+			showLive(JSON.parse(response.body))
+		})
+	})
 	
 }
 
@@ -31,14 +31,14 @@ function sendMessage(data,type) {
 	stompClient.send("/app/message", {}, JSON.stringify(jsonObj));
 }
 
-// function joinIng() {
-// 	let jsonObj = { 
-// 		name:localStorage.getItem("name"),
-// 		profile:localStorage.getItem("myimage"),
-// 		joinDate:new Date()
-// 	}	
-// 	stompClient.send("/app/setlive", {}, JSON.stringify(jsonObj));
-// }
+function joinIng() {
+	let jsonObj = { 
+		name:localStorage.getItem("name"),
+		profile:localStorage.getItem("myimage"),
+		joinDate:new Date()
+	}	
+	stompClient.send("/app/setlive", {}, JSON.stringify(jsonObj));
+ }
 
 function closeConnection() {
 	stompClient.disconnect();
@@ -48,7 +48,10 @@ function closeConnection() {
 $(document).ready((e) => {
 	
 	connect();
-	// joinIng();
+	setTimeout(() => {
+		joinIng();
+	}, 5000);
+	
 
  	$("#selectImageInput").on('change',   function () {
         var reader = new FileReader();
@@ -93,9 +96,9 @@ $(document).ready((e) => {
 })
 
 
-// function showLive(message) {
+function showLive(message) {
 
-// }
+}
 
 function showMessage(message) {
 	var head;
