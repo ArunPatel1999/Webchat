@@ -1,24 +1,33 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Video Chat</title>
-    <link rel="stylesheet" href="/style.css">
+    <meta charset="utf-8">
+    <title>Live Video</title>
+    <style type="text/css">
+        #container{
+            margin: 0px auto;
+            width: 500px;
+            height: 375px;
+            border: 10px #333 solid;
+        }
+        #videoElement{
+            width: 500px;
+            height: 375px;
+            background-color: #666;
+        }
+    </style>
 
-	<script src="/webjars/jquery/jquery.min.js"></script>
-    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-	<script src="/script.js"></script>
-
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-	
 </head>
-<body>
+<body bgcolor="skyblue">
+    <div id="container">
+        <video autoplay="true", id="videoElement"></video>
+    </div>
 
-    <h1><i class="fa fa-camera" aria-hidden="true"></i></h1>
-
+    <script type="text/javascript">
+        var video =  document.querySelector("#videoElement");
+        navigator.getUserMedia = navigator.getUserMedia||navigator.webkitGetUsermedia||navigator.mozGetUserMedia||navigator.getmsGetUserMedia||navigator.oGetUserMedia;
+        
+    </script>
+    
 </body>
 </html>

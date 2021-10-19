@@ -11,16 +11,17 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 @SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSocketMessageBroker
-public class ConfigrationClass extends AbstractWebSocketMessageBrokerConfigurer implements WebSocketMessageBrokerConfigurer {
+public class ConfigrationClass extends AbstractWebSocketMessageBrokerConfigurer
+		implements WebSocketMessageBrokerConfigurer {
 
 	@Override
-    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
-        registration.setMessageSizeLimit(2000000000); // default : 64 * 1024
-        registration.setSendTimeLimit(20 * 10000); // default : 10 * 10000
-        registration.setSendBufferSizeLimit(3* 512 * 1024); // default : 512 * 1024
+	public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+		registration.setMessageSizeLimit(2000000000); // default : 64 * 1024
+		registration.setSendTimeLimit(20 * 100000); // default : 10 * 10000
+		registration.setSendBufferSizeLimit(3 * 512 * 1024); // default : 512 * 1024
 
-    }
-	
+	}
+
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/server1").withSockJS();
@@ -32,5 +33,4 @@ public class ConfigrationClass extends AbstractWebSocketMessageBrokerConfigurer 
 		registry.setApplicationDestinationPrefixes("/app");
 	}
 
-	
 }

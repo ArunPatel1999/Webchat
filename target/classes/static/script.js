@@ -20,7 +20,7 @@ function showMessage(message) {
 	if(localStorage.getItem("name") == message.name) {
 		head=`<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">`;
 		if (message.type == 'IMAGE') {
-			head+=`<img class="message-get-image" src="data:image/jpeg;base64, ${message.data}"><br>`;
+			head+=`<img class="message-get-image" src="data:image/jpeg;base64, ${message.data}" ><br>`;
 		} else if(message.type == 'VIDEO') {
 			head+=`<video class="message-get-video" controls><source src="data:video/mp4;base64,${message.data}" type="video/mp4"></video><br>`;
 		}	
@@ -95,4 +95,10 @@ $(document).ready((e) => {
 	$('.selectImageSpan').click(function() {
 		$('#selectImageInput').click();
 	});
+
+	 $("#message").on('keyup', function (event) {
+      if (event.keyCode === 13) {
+         sendMessage(null,'MESSAGE');
+      }
+   });
 })

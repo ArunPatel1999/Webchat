@@ -8,9 +8,8 @@
 	<script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-	<script src="/script.js"></script>
+	<script src="/script.js"/>
 
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
@@ -20,6 +19,7 @@
 <body class="bg-warning">
 				 
 <div class="container chat" >
+	
 	<div class="card">
 		<div class="card-header msg_head">
 			<div class="d-flex bd-highlight">
@@ -30,7 +30,6 @@
 			</div>
 			<span id="CloseConnecrtion" class="input-group-text action_menu_btn" style="border-radius: 0 15px 15px 0 !important; background-color: rgba(0,0,0,0.3) !important;" ><i class="fas fa-power-off"></i></span>		
 		</div>
-		
 		
 		<div id="getMessage" class="card msg_card_body" style="overflow-x: hidden; padding-right: 30px; margin-left: 10px; margin-right: 10px;">
 			<div class="card-body msg_card_body">
@@ -43,16 +42,7 @@
 				<span class="input-group-text attach_btn selectImageSpan"><i class="fas fa-paperclip"> </i></span>
 				<input id="selectImageInput" type='file'/>
 			</div>
-			
-		<!-- 			
-			<div class="fake-input">
-				<input type="text" style="padding-top: 3px" id="message" class="form-control type_msg" placeholder="Type your message..."></input>
-				<img src="https://www.pixsy.com/wp-content/uploads/2021/04/ben-sweet-2LowviVHZ-E-unsplash-1.jpeg" />
-			</div>
-		-->
-
 			<input type="text" style="padding-top: 3px" id="message" class="form-control type_msg" placeholder="Type your message..."></input>
-
 			<div class="input-group-append">
 				<span id="sendMessage" class="input-group-text" style="background-color:rgba(0,0,0,0.3); border:none ;" onclick="sendMessage"><i class="fas fa-location-arrow"></i></span>
 			</div>
@@ -63,6 +53,7 @@
 	</div>
 
 	</div>				
+</div>
 </div>
 </body>
 </html>
