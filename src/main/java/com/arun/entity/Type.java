@@ -1,4 +1,4 @@
-package com.arun;
+package com.arun.entity;
 
 enum Type {
 

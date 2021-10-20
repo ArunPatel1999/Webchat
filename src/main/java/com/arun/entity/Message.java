@@ -1,4 +1,4 @@
-package com.arun;
+package com.arun.entity;
 
 import java.util.Date;
 
@@ -7,7 +7,7 @@ public class Message {
 	private int id;
 	private String name;
 	private String profile;
-	private String message;
+	private String text;
 	private String data;
 	private Type type;
 	private Date sendDate;
@@ -30,11 +30,12 @@ public class Message {
 	public void setProfile(String profile) {
 		this.profile = profile;
 	}
-	public String getMessage() {
-		return message;
+	
+	public String getText() {
+		return text;
 	}
-	public void setMessage(String message) {
-		this.message = message;
+	public void setText(String text) {
+		this.text = text;
 	}
 	public String getData() {
 		return data;

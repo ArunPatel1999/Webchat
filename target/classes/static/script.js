@@ -6,15 +6,24 @@ function connect(){
 	
 	stompClient.connect({}, function(frame){
 		stompClient.subscribe("/topic/return-to", function(response){
-			showMessage(JSON.parse(response.body))
+			var data = JSON.parse(response.body);
+			if(data.type == 'JOIN')
+				joinGroupNameShow(data);
+			else
+				showMessage(data);
 		})
 	})
 
-	stompClient.connect({}, function(frame){
-		stompClient.subscribe("/topic/getAllLive", function(response){
-			showLive(JSON.parse(response.body))
-		})
-	})
+	// stompClient.connect({}, function(frame){
+	// 	stompClient.subscribe("/topic/getAllLive", function(response){
+	// 		var data =JSON.parse(response.body);
+	// 		data.sort((a, b) => {
+  	// 			return new Date(b.joinDate) - new Date(a.joinDate); 
+	// 		});
+	// 		$("#liveList").empty();
+	// 		data.forEach(showLive); 
+	// 	})
+	// })
 	
 }
 
@@ -24,7 +33,7 @@ function sendMessage(data,type) {
 		profile:localStorage.getItem("myimage"),
 		type:type,
 		data:data,
-		message:$("#message").val(),
+		text:$("#message").val(),
 		sendDate:new Date()
 	}	
 	$("#message").val('')
@@ -49,19 +58,17 @@ $(document).ready((e) => {
 	
 	connect();
 	setTimeout(() => {
-		joinIng();
-	}, 5000);
+		// joinIng();
+		sendMessage(null,'JOIN');
+	}, 1000);
 	
 
  	$("#selectImageInput").on('change',   function () {
         var reader = new FileReader();
         var selectedFile = this.files[0];
 		var type = selectedFile.type.substring(0,5).toUpperCase();
-		console.log("type => "+type);
-        reader.onload = function () {
-          	var comma = this.result.indexOf(',');
-          	var base64 = this.result.substr(comma + 1);
-		  	sendMessage(base64, type);
+		reader.onload = function () {
+		  	sendMessage(this.result, type);
         }
         reader.readAsDataURL(selectedFile);
     })
@@ -96,8 +103,25 @@ $(document).ready((e) => {
 })
 
 
-function showLive(message) {
+function showLive(data) {
+	let d =  new Date() - new Date(data.joinDate);
+	let weekdays     = Math.floor(d/1000/60/60/24/7);
+	let days         = Math.floor(d/1000/60/60/24 - weekdays*7);
+	let hours        = Math.floor(d/1000/60/60    - weekdays*7*24            - days*24);
+    let minutes      = Math.floor(d/1000/60       - weekdays*7*24*60         - days*24*60         - hours*60);
+    let seconds      = Math.floor(d/1000          - weekdays*7*24*60*60      - days*24*60*60      - hours*60*60      - minutes*60);
+	var time ="";
+	if(hours>0)
+		time+=hours+"h ";
+	time+=minutes+" m "+seconds+" s";
+	$("#liveList").append(`<li class="active"><div class="d-flex bd-highlight"><div class="img_cont"><img src="${data.profile}" class="rounded-circle user_img"><span class="online_icon"></span></div><div class="user_info"><span>${data.name}</span><p>${time}</p></div></div></li>`);			
+}
 
+function joinGroupNameShow(message) {
+	var d =  new Date(message.sendDate);
+	var datestring =("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2)+" "+("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +d.getFullYear();
+	$("#getMessage").append(`<div class="some_one_join_group"><b style="font-size: 20px;">${message.name}</b> - Join Chat At - ${datestring} </div>`);
+	$('#getMessage').animate({scrollTop: $('#getMessage').prop("scrollHeight")}, 500);
 }
 
 function showMessage(message) {
@@ -105,30 +129,23 @@ function showMessage(message) {
 	var d =  new Date(message.sendDate);
 	var datestring =("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2)+" "+("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +d.getFullYear();
 	
-	var profileImage;
-
-	if(message.profile == null) 
-		profileImage = "https://thumbs.dreamstime.com/b/businessman-icon-vector-male-avatar-profile-image-profile-businessman-icon-vector-male-avatar-profile-image-182095609.jpg";
-	else
-		profileImage = `data:video/mp4;base64, ${message.profile}`;
-
 	if(localStorage.getItem("name") == message.name) {
 		head=`<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">`;
 		if (message.type == 'IMAGE') {
-			head+=`<img class="message-get-image" src="data:image/jpeg;base64, ${message.data}" ><br>`;
+			head+=`<img class="message-get-image" src="${message.data}" ><br>`;
 		} else if(message.type == 'VIDEO') {
-			head+=`<video class="message-get-video" controls><source src="data:video/mp4;base64,${message.data}" type="video/mp4"></video><br>`;
+			head+=`<video class="message-get-video" controls><source src="${message.data}" type="video/mp4"></video><br>`;
 		}	
-		head+=`${message.message}<span class="msg_time_send" style="left: 9px;">${datestring}</span></div><div class="img_cont_msg"><img src="${profileImage}",  class="rounded-circle user_img_msg"></div></div>`;
+		head+=`${message.text}<span class="msg_time_send" style="left: 9px;">${datestring}</span></div><div class="img_cont_msg"><img src="${message.profile}",  class="rounded-circle user_img_msg"></div></div>`;
 	}
 	else {
-		head=`<div class="d-flex justify-content-start mb-4" style="padding-left: 10px;"><div st class="img_cont_msg"><img src="${profileImage}" class="rounded-circle user_img_msg"></div><div class="msg_cotainer"  style="min-width: 15vmin; text-align: center;margin-left: 20px;">`;
+		head=`<div class="d-flex justify-content-start mb-4" style="padding-left: 10px;"><div st class="img_cont_msg"><img src="${message.profile}" class="rounded-circle user_img_msg"></div><div class="msg_cotainer"  style="min-width: 15vmin; text-align: center;margin-left: 20px;">`;
 		if (message.type == 'IMAGE') {
-			head+=`<img class="message-get-image" src="data:image/jpeg;base64, ${message.data}"><br>`;
+			head+=`<img class="message-get-image" src="${message.data}"><br>`;
 		} else if(message.type == 'VIDEO') {
-			head+=`<video class="message-get-video" controls><source src="data:video/mp4;base64,${message.data}" type="video/mp4"></video><br>`;
+			head+=`<video class="message-get-video" controls><source src="${message.data}" type="video/mp4"></video><br>`;
 		}
-		head+=`${message.message}<span class="msg_time"  style="right: 9px;">${datestring}</span></div></div>`;
+		head+=`${message.text}<span class="msg_time"  style="right: 9px;">${datestring}</span></div></div>`;
 	}
 	
 	$("#getMessage").append(head);

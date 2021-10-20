@@ -213,6 +213,20 @@ background-color: #78e08f;
 padding: 10px;
 position: relative;
 }
+
+.some_one_join_group{
+  min-width: 80%;
+  max-width: 80%;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: 10px;
+  margin-right: 10%;
+  margin-left: 10%;
+  color: #00FFFF;
+  padding: 10px;
+  position: relative;
+  }
+
 .msg_time{
 position: absolute;
 left: 0;

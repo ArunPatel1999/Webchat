@@ -15,17 +15,16 @@
           let name = $("#name-value").val();
           localStorage.setItem("name", name);
           $("#name-value").val("");
+          if(localStorage.getItem("myimage") == null)
+            localStorage.setItem("myimage", "https://assets.materialup.com/uploads/5b045613-638c-41d9-9b7c-5f6c82926c6e/preview.png");
           location.href = "Chat.html";
         });
 
         $("#myimage").on('change',   function () {
           var reader = new FileReader();
           var selectedFile = this.files[0];
-	
           reader.onload = function () {
-            var comma = this.result.indexOf(',');
-            var base64 = this.result.substr(comma + 1);
-            localStorage.setItem("myimage", base64);
+            localStorage.setItem("myimage", this.result);
           }
           reader.readAsDataURL(selectedFile);
         });
