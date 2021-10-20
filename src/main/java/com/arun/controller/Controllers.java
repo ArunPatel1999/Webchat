@@ -49,6 +49,11 @@ public class Controllers {
 		return liveList;
 	}
 	
-	
+	@MessageMapping("/liveStrem")
+	@SendTo("/topic/getLiveStremData")
+	public Object getLive(@RequestBody Object data) {
+		System.out.println("mydata => " +data);
+		return data;
+	}
 	
 }
