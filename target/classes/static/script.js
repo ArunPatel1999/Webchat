@@ -7,8 +7,9 @@ function connect(){
 	stompClient.connect({}, function(frame){
 		stompClient.subscribe("/topic/return-to", function(response){
 			var data = JSON.parse(response.body);
-			
-			if(data.type == 'LIST') 
+			if(data.type == null) 
+				null;
+			else if(data.type == 'LIST') 
 				showLive(data.list)
 			else if(data.type == 'JOIN') 
 				joinGroupNameShow(data,true);
@@ -160,4 +161,3 @@ function showMessage(message) {
 	$('#getMessage').animate({scrollTop: $('#getMessage').prop("scrollHeight")}, 500);
 	 
 }
-

@@ -15,11 +15,10 @@ function connect(){
 
 $(document).ready(function(){
 
-    
 
     $("#start").click(()=>{
-        connect();
-		test();
+      connect();
+		  test();
 	});
 
      $("#view").click(()=>{

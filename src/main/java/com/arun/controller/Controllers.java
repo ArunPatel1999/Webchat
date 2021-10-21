@@ -11,8 +11,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
-import com.arun.entity.Live;
-import com.arun.entity.Message;
+import com.arun.entity.*;
 
 @Controller
 public class Controllers {
@@ -30,6 +29,8 @@ public class Controllers {
 	@MessageMapping("/message")
 	@SendTo("/topic/return-to")
 	public Message getMessage(@Payload Message message) {
+		if(message.getType().equals(Type.JOIN) && liveList.stream().anyMatch(x -> x.getName().equals(message.getName())))
+			message.setType(null);
 		message.setId(id++);
 		return message;
 	}
@@ -47,7 +48,7 @@ public class Controllers {
 
 	@MessageMapping("/liveStrem")
 	@SendTo("/topic/getLiveStremData")
-	public String getLive(@Payload String data) {
+	public String getLive(@Payload  String data) {
 		return data;
 	}
 

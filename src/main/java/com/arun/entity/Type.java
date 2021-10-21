@@ -1,6 +1,6 @@
 package com.arun.entity;
 
-enum Type {
+public enum Type {
 
 	MESSAGE,
 	IMAGE,
