@@ -7,24 +7,18 @@ function connect(){
 	stompClient.connect({}, function(frame){
 		stompClient.subscribe("/topic/return-to", function(response){
 			var data = JSON.parse(response.body);
-			if(data.type == 'JOIN')
-				joinGroupNameShow(data);
-			else
+			
+			if(data.type == 'LIST') 
+				showLive(data.list)
+			else if(data.type == 'JOIN') 
+				joinGroupNameShow(data,true);
+			else if(data.type == 'LEAVE') 
+				joinGroupNameShow(data, false);
+			else 
 				showMessage(data);
+			
 		})
-	})
-
-	// stompClient.connect({}, function(frame){
-	// 	stompClient.subscribe("/topic/getAllLive", function(response){
-	// 		var data =JSON.parse(response.body);
-	// 		data.sort((a, b) => {
-  	// 			return new Date(b.joinDate) - new Date(a.joinDate); 
-	// 		});
-	// 		$("#liveList").empty();
-	// 		data.forEach(showLive); 
-	// 	})
-	// })
-	
+	})	
 }
 
 function sendMessage(data,type) {
@@ -40,25 +34,28 @@ function sendMessage(data,type) {
 	stompClient.send("/app/message", {}, JSON.stringify(jsonObj));
 }
 
-function joinIng() {
+function joinAndClose(join) {
 	let jsonObj = { 
-		name:localStorage.getItem("name"),
-		profile:localStorage.getItem("myimage"),
+		id: localStorage.getItem("myuuid"),
+		name: localStorage.getItem("name"),
+		profile: localStorage.getItem("myimage"),
+		join:join,
 		joinDate:new Date()
 	}	
 	stompClient.send("/app/setlive", {}, JSON.stringify(jsonObj));
  }
 
 function closeConnection() {
+	joinAndClose(false);
+	sendMessage(null,'LEAVE');
 	stompClient.disconnect();
 } 
-
 
 $(document).ready((e) => {
 	
 	connect();
 	setTimeout(() => {
-		// joinIng();
+		joinAndClose(true);
 		sendMessage(null,'JOIN');
 	}, 1000);
 	
@@ -103,24 +100,35 @@ $(document).ready((e) => {
 })
 
 
-function showLive(data) {
-	let d =  new Date() - new Date(data.joinDate);
-	let weekdays     = Math.floor(d/1000/60/60/24/7);
-	let days         = Math.floor(d/1000/60/60/24 - weekdays*7);
-	let hours        = Math.floor(d/1000/60/60    - weekdays*7*24            - days*24);
-    let minutes      = Math.floor(d/1000/60       - weekdays*7*24*60         - days*24*60         - hours*60);
-    let seconds      = Math.floor(d/1000          - weekdays*7*24*60*60      - days*24*60*60      - hours*60*60      - minutes*60);
-	var time ="";
-	if(hours>0)
-		time+=hours+"h ";
-	time+=minutes+" m "+seconds+" s";
-	$("#liveList").append(`<li class="active"><div class="d-flex bd-highlight"><div class="img_cont"><img src="${data.profile}" class="rounded-circle user_img"><span class="online_icon"></span></div><div class="user_info"><span>${data.name}</span><p>${time}</p></div></div></li>`);			
-}
 
-function joinGroupNameShow(message) {
+function showLive(list) {
+	$("#liveList").empty();			
+
+	for (let data of list) {
+
+		let d =  new Date() - new Date(data.joinDate);
+		let weekdays     = Math.floor(d/1000/60/60/24/7);
+		let days         = Math.floor(d/1000/60/60/24 - weekdays*7);
+		let hours        = Math.floor(d/1000/60/60    - weekdays*7*24            - days*24);
+		let minutes      = Math.floor(d/1000/60       - weekdays*7*24*60         - days*24*60         - hours*60);
+		let seconds      = Math.floor(d/1000          - weekdays*7*24*60*60      - days*24*60*60      - hours*60*60      - minutes*60);
+		var time ="";
+		if(hours>0)
+			time+=hours+"h ";
+		time+=minutes+" m "+seconds+" s";
+		$("#liveList").append(`<li class="active"><div class="d-flex bd-highlight"><div class="img_cont"><img src="${data.profile}" class="rounded-circle user_img"><span class="online_icon"></span></div><div class="user_info"><span>${data.name}</span><p>${time}</p></div></div></li>`);			
+	}
+}				
+
+function joinGroupNameShow(message, join) {
 	var d =  new Date(message.sendDate);
 	var datestring =("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2)+" "+("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +d.getFullYear();
-	$("#getMessage").append(`<div class="some_one_join_group"><b style="font-size: 20px;">${message.name}</b> - Join Chat At - ${datestring} </div>`);
+	var text;
+	if(join)
+		text = "Join Chat At";
+	else
+		text = "Leave Chat At";
+	$("#getMessage").append(`<div class="some_one_join_group"><b style="font-size: 20px;">${message.name}</b> - ${text} - ${datestring} </div>`);
 	$('#getMessage').animate({scrollTop: $('#getMessage').prop("scrollHeight")}, 500);
 }
 
@@ -152,3 +160,4 @@ function showMessage(message) {
 	$('#getMessage').animate({scrollTop: $('#getMessage').prop("scrollHeight")}, 500);
 	 
 }
+

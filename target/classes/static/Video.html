@@ -19,33 +19,16 @@
 <body>
     
     <div>
-        <input type="submit" value="start" id="start">
-        <input type="submit" value="watch" id="view">
+        <input type="submit" value="start" id="start" style="width: 500px; height: 100px;">
+        <input type="submit" value="watch" id="view" style="width: 500px; height: 100px;">
     </div>
 
-
-    
-    <div class="viewVideo" style="background-color: yellow;">
-        <video id="videoView" autoplay="true" width="500" height="500" style="background-color: rebeccapurple;"></video>
-    </div>
-
-    <!--making video object to display video-->
-    
-    <div class="videoObject">
-        <video id="videoElement" autoplay="true" width="700" height="500"></video>
-    </div>
     
 
-    <!--Now capture the Image-->
-    
-    <!--creating a button to capture the Image-->
-         
-    <button id="capture" class="btn">Capture Image</button>
-                                  
-    <!--canvas to display the captured picture-->
-    
-    <canvas id="image" class="canvas"></canvas>
+    <image id="image1" class="canvas" ></image>
 
+    <video id="videoElement" autoplay="true" width="700" height="500" hidden></video>
+    <canvas id="image" class="canvas" hidden ></canvas>
 
     <script src="video.js"></script>
 

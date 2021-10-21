@@ -5,5 +5,6 @@ enum Type {
 	MESSAGE,
 	IMAGE,
 	VIDEO,
-	JOIN
+	JOIN,
+	LEAVE
 }

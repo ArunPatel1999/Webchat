@@ -1,15 +1,15 @@
 package com.arun.controller;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.user.SimpUser;
-import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.arun.entity.Live;
 import com.arun.entity.Message;
@@ -18,42 +18,37 @@ import com.arun.entity.Message;
 public class Controllers {
 
 	private int id = 1;
-	private int liveId = 1;
-	private List<Live> liveList;
+	private Set<Live> liveList;
+	private Map<String, Object> map;
 
-	private final SimpUserRegistry simpUserRegistry;
-
-	public Controllers(SimpUserRegistry simpUserRegistry) {
-        this.simpUserRegistry = simpUserRegistry;
-        liveList = new LinkedList<>();
-	}
-	
-
-	public void connectedEquipments() {
-	    System.out.println( this.simpUserRegistry);
+	public Controllers() {
+		liveList = new LinkedHashSet<>();
+		map = new LinkedHashMap<>();
+		map.put("type", "LIST");
 	}
 
 	@MessageMapping("/message")
 	@SendTo("/topic/return-to")
-	public Message getMessage(@RequestBody Message message) {
+	public Message getMessage(@Payload Message message) {
 		message.setId(id++);
-		connectedEquipments();
 		return message;
 	}
 
 	@MessageMapping("/setlive")
-	@SendTo("/topic/getAllLive")
-	public List<Live> getLive(@RequestBody Live live) {
-		live.setId(liveId++);
-		liveList.add(live);
-		return liveList;
+	@SendTo("/topic/return-to")
+	public Map<String, Object> getLive(@Payload Live live) {
+		if (live.isJoin())
+			liveList.add(live);
+		else
+			liveList.removeIf(x -> x.getId().equals(live.getId()));
+		map.put("list", new TreeSet<>(liveList));
+		return map;
 	}
-	
+
 	@MessageMapping("/liveStrem")
 	@SendTo("/topic/getLiveStremData")
-	public Object getLive(@RequestBody Object data) {
-		System.out.println("mydata => " +data);
+	public String getLive(@Payload String data) {
 		return data;
 	}
-	
+
 }
