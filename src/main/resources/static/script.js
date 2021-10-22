@@ -10,11 +10,7 @@ function connect(){
 			if(data.type == null) 
 				null;
 			else if(data.type == 'LIST') 
-				showLive(data.list)
-			else if(data.type == 'JOIN') 
-				joinGroupNameShow(data,true);
-			else if(data.type == 'LEAVE') 
-				joinGroupNameShow(data, false);
+				showLive(data);
 			else 
 				showMessage(data);
 			
@@ -24,6 +20,7 @@ function connect(){
 
 function sendMessage(data,type) {
 	let jsonObj = { 
+		id: localStorage.getItem("myuuid"),
 		name:localStorage.getItem("name"),
 		profile:localStorage.getItem("myimage"),
 		type:type,
@@ -36,6 +33,7 @@ function sendMessage(data,type) {
 }
 
 function joinAndClose(join) {
+	
 	let jsonObj = { 
 		id: localStorage.getItem("myuuid"),
 		name: localStorage.getItem("name"),
@@ -43,12 +41,12 @@ function joinAndClose(join) {
 		join:join,
 		joinDate:new Date()
 	}	
+	
 	stompClient.send("/app/setlive", {}, JSON.stringify(jsonObj));
  }
 
 function closeConnection() {
 	joinAndClose(false);
-	sendMessage(null,'LEAVE');
 	stompClient.disconnect();
 } 
 
@@ -57,7 +55,6 @@ $(document).ready((e) => {
 	connect();
 	setTimeout(() => {
 		joinAndClose(true);
-		sendMessage(null,'JOIN');
 	}, 1000);
 	
 
@@ -80,6 +77,14 @@ $(document).ready((e) => {
 		location.href = "/";
 	})
 	
+	
+	$("#goInVideo").click(()=>{
+		closeConnection();
+		location.href = "video.html";
+	})
+	
+
+
 	$("#clearText").click(()=>{
 		$("#message").val('');
 	})
@@ -102,9 +107,13 @@ $(document).ready((e) => {
 
 
 
-function showLive(list) {
-	$("#liveList").empty();			
+function showLive(data) {
 
+	if(data.show != null)
+		joinGroupNameShow(data.show);
+
+	list = data.list;
+	$("#liveList").empty();			
 	for (let data of list) {
 
 		let d =  new Date() - new Date(data.joinDate);
@@ -121,11 +130,11 @@ function showLive(list) {
 	}
 }				
 
-function joinGroupNameShow(message, join) {
-	var d =  new Date(message.sendDate);
+function joinGroupNameShow(message) {
+	var d =  new Date(message.joinDate);
 	var datestring =("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2)+" "+("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +d.getFullYear();
 	var text;
-	if(join)
+	if(message.join)
 		text = "Join Chat At";
 	else
 		text = "Leave Chat At";

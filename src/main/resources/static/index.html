@@ -6,11 +6,11 @@
 
     <link rel="stylesheet" href="/style.css" />
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-
     <script src="/webjars/jquery/jquery.min.js"></script>
 
     <script>
       $(document).ready((e) => {
+
         $("#login").click(() => {
           let name = $("#name-value").val();
           localStorage.setItem("name", name);
@@ -32,9 +32,7 @@
       });
 
       function uuidv4() {
-        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
       }
     </script>
 
