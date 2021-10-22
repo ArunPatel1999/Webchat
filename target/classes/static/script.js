@@ -145,7 +145,7 @@ function joinGroupNameShow(message) {
 function showMessage(message) {
 	var head;
 	var d =  new Date(message.sendDate);
-	var datestring =("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2)+" "+("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +d.getFullYear();
+	var datestring =d.toLocaleString('en-US', { hour: 'numeric',  minute: 'numeric', })+" "+("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +d.getFullYear();
 	
 	if(localStorage.getItem("name") == message.name) {
 		head=`<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">`;
