@@ -57,4 +57,13 @@ public class Controllers {
 		return data;
 	}
 
+	
+	
+	// Use Reactive programmin then i thnik create video
+	@MessageMapping("/test")
+	@SendTo("/topic/getTest")
+	public String getLiveTest(@Payload String data) {
+//		System.out.println(data.getData().toString());
+		return data;
+	}
 }

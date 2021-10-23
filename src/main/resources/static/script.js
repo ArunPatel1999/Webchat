@@ -51,8 +51,8 @@ function closeConnection() {
 } 
 
 $(document).ready((e) => {
-	
 	connect();
+	
 	setTimeout(() => {
 		joinAndClose(true);
 	}, 1000);
