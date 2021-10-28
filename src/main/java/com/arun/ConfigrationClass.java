@@ -10,7 +10,8 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 @Configuration
 @EnableWebSocketMessageBroker
 public class ConfigrationClass implements WebSocketMessageBrokerConfigurer {
-
+	
+	
 	@Override
 	public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
 		registration.setMessageSizeLimit(2000000000); // default : 64 * 1024
